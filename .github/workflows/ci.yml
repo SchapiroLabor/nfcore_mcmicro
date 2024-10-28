@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - dev
+      - documentation
+      - ci_nf-test
   pull_request:
   release:
     types: [published]
@@ -39,8 +41,6 @@ jobs:
         uses: adamrtalbot/detect-nf-test-changes@v0.0.4
         with:
           head: ${{ github.sha }}
-          # TODO: check that the following works on pull_request
-          # base: origin/${{ github.ref_name }}
           base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha || github.event.before }}
 
       - name: print list of nf-test files
@@ -51,11 +51,13 @@ jobs:
     name: "Run tests (${{ matrix.nf_test_files }} ${{ matrix.profile }} NF-${{ matrix.NXF_VER }})"
     needs: [nf-test-changes]
     # Only run on push if this is the nf-core dev branch (merged PRs)
+    needs: [nf-test-changes]
     if: "${{ (github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/mcmicro')) && needs.nf-test-changes.outputs.nf_test_files != '[]' }}"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        nf_test_files: ["${{ fromJson(needs.nf-test-changes.outputs.nf_test_files) }}"]
         NXF_VER:
           - "24.04.2"
           - "latest-everything"
