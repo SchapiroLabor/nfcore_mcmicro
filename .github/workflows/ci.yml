@@ -42,7 +42,8 @@ jobs:
         with:
           head: ${{ github.sha }}
           # TODO: check that the following works on pull_request
-          base: origin/${{ github.ref_name }}
+          # base: origin/${{ github.ref_name }}
+          base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha || github.event.before }}
 
       - name: print list of nf-test files
         run: |
