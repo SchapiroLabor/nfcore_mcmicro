@@ -42,7 +42,7 @@ jobs:
         with:
           head: ${{ github.sha }}
           # TODO: check that the following works on pull_request
-          base: ${{ github.ref_name }}
+          base: origin/${{ github.ref_name }}
 
       - name: print list of nf-test files
         run: |
