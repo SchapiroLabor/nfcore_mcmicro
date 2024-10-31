@@ -30,7 +30,7 @@ The nf-core/mcmicro pipeline is an end-to-end processing pipeline that transform
 
 ![nf-core/mcmicro metro diagram](assets/mcmicro_metro.png)
 
-The MC in MCMICRO stands for 'Multiple Choice' and that refers to the fact that there will be multiple module options available for each step in the pipeline.  The currently supported options are provided in parentheses.
+The MC in MCMICRO stands for 'Multiple Choice' and that refers to the fact that there will be multiple module options available for most steps in the pipeline.  The currently supported options are provided in parentheses for required steps.
 1. Registration ([Ashlar](https://nf-co.re/modules/ashlar/))
 2. Segmentation ([Cellpose](https://nf-co.re/modules/cellpose/), [Mesmer](https://nf-co.re/modules/deepcell_mesmer/))
 3. Quantification ([MCQuant](https://nf-co.re/modules/mcquant/))
