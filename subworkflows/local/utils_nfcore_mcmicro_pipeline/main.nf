@@ -265,7 +265,7 @@ def toolCitationText() {
             "Ashlar (Muhlich et al. 2022),",
             params["segmentation"].contains("cellpose") ? "Cellpose (Stringer et al. 2021)," : "",
             params["segmentation"].contains("mesmer") ? "Mesmer (Van Valen et al. 2016)," : "",
-            "MCQuant,",
+            "MCQuant (Schapiro et al. 2022),",
             "FastQC (Andrews 2010),",
             "MultiQC (Ewels et al. 2016)",
             "."
@@ -282,7 +282,7 @@ def toolBibliographyText() {
             "<li>Muhlich, J.L., Chen, Y., Yapp, C., Russell, D., Santagata, S., Sorger, P.K. (2022) Stitching and registering highly multiplexed whole-slide images of tissues and tumors using ASHLAR, Bioinformatics 38(19), 4613–4621. doi: 10.1093/bioinformatics/btac544</li>",
             params["segmentation"].contains("cellpose") ? "<li>Stringer, C., Wang, T., Michaelos, M., & Pachitariu, M. (2021). Cellpose: a generalist algorithm for cellular segmentation. Nature methods, 18(1), 100-106.</li>" : "",
             params["segmentation"].contains("mesmer") ? "<li>Van Valen, D.A., Kudo, T., Lane, K.M., Macklin, D.N., Quach, N.T., DeFelice, M.M., Maayan, I., Tanouchi, Y., Ashley, E.A., Covert, M.W. (2016). Deep Learning Automates the Quantitative Analysis of Individual Cells in Live-Cell Imaging Experiments. PLOS Computational Biology 12(11), doi: 10.1371/journal.pcbi.1005177.</li>" : "",
-            "<li></li>",
+            "<li>Schapiro, D., Sokolov, A., Yapp, C. et al. MCMICRO: a scalable, modular image-processing pipeline for multiplexed tissue imaging. Nat Methods 19, 311–315 (2022). doi: 10.1038/s41592-021-01308-y</li>",
             "<li>Andrews S, (2010) FastQC, URL: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/).</li>",
             "<li>Ewels, P., Magnusson, M., Lundin, S., & Käller, M. (2016). MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics , 32(19), 3047–3048. doi: /10.1093/bioinformatics/btw354</li>"
         ].join(' ').trim()
