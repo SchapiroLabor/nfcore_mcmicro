@@ -3,7 +3,7 @@ name: nf-core CI
 on:
   push:
     branches:
-      # - dev
+      - dev
       - ci_nf-test
   pull_request:
   release:
