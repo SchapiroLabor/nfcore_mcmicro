@@ -51,7 +51,8 @@ jobs:
   test:
     name: "Run tests (${{ matrix.nf_test_files }} ${{ matrix.profile }} NF-${{ matrix.NXF_VER }})"
     needs: [nf-test-changes]
-    if: needs.nf-test-changes.outputs.nf_test_files != '[]'
+    # Only run on push if this is the nf-core dev branch (merged PRs)
+    if: "${{ (github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/mcmicro')) && needs.nf-test-changes.outputs.nf_test_files != '[]' }}"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -64,6 +65,16 @@ jobs:
           # - "conda"
           - "docker"
           - "singularity"
+        test_name:
+          - "test"
+        isMaster:
+          - ${{ github.base_ref == 'master' }}
+        # Exclude conda and singularity on dev
+        exclude:
+          - isMaster: false
+            profile: "conda"
+          - isMaster: false
+            profile: "singularity"
     steps:
       - name: install curl
         run: sudo apt update && sudo apt install -y curl wget
