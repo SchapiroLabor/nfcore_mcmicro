@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - dev
-      - ci_nf-test
   pull_request:
   release:
     types: [published]
