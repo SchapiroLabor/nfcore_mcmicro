@@ -1,6 +1,6 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/nf-core/mcmicro/master/assets/schema_input.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/nf-core/mcmicro/master/assets/schema_input_cycle.json",
     "title": "nf-core/mcmicro pipeline - params.input_cycle schema",
     "description": "Schema for the file provided with params.input_cycle",
     "type": "array",
