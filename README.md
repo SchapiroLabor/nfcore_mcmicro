@@ -9,7 +9,7 @@
 [![GitHub Actions Linting Status](https://github.com/nf-core/mcmicro/actions/workflows/linting.yml/badge.svg)](https://github.com/nf-core/mcmicro/actions/workflows/linting.yml)[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/mcmicro/results)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX)
 [![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A524.04.2-23aa62.svg)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
@@ -26,11 +26,12 @@
 
 If you want to run the original MCMICRO pipeline outside of nf-core, please see <https://mcmicro.org/>.
 
-The nf-core/mcmicro pipeline is an end-to-end processing pipeline that transforms multi-channel whole-slide images into single-cell data.  It takes samplesheet and markersheet files as input and perfoms registration, segmentation and quantification.  Multiple segmentation modules are available and can be run in parallel.  The pipeline can also optionally perform background and shading correction, background subtraction, and supports TMI cores.  It returns a pre-segmentation image file, a segmentation mask image, and a cell x feature array spreadsheet.
+The nf-core/mcmicro pipeline is an end-to-end processing pipeline that transforms multi-channel whole-slide images into single-cell data. It takes samplesheet and markersheet files as input and perfoms registration, segmentation and quantification. Multiple segmentation modules are available and can be run in parallel. The pipeline can also optionally perform background and shading correction, background subtraction, and supports TMI cores. It returns a pre-segmentation image file, a segmentation mask image, and a cell x feature array spreadsheet.
 
 ![nf-core/mcmicro metro diagram](assets/mcmicro_metro.png)
 
-The MC in MCMICRO stands for 'Multiple Choice' and that refers to the fact that there will be multiple module options available for most steps in the pipeline.  The currently supported options are provided in parentheses for required steps.
+The MC in MCMICRO stands for 'Multiple Choice' and that refers to the fact that there will be multiple module options available for most steps in the pipeline. The currently supported options are provided in parentheses for required steps.
+
 1. Registration ([Ashlar](https://nf-co.re/modules/ashlar/))
 2. Segmentation ([Cellpose](https://nf-co.re/modules/cellpose/), [Mesmer](https://nf-co.re/modules/deepcell_mesmer/))
 3. Quantification ([MCQuant](https://nf-co.re/modules/mcquant/))
@@ -50,23 +51,22 @@ TEST1,1,10,https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/
 
 ```
 
-Each row of the samplesheet represents a single cycle `ome.tiff` microscopy image file.  The first column `sample` is the sample identifier.  It can be repeated in multiple rows for samples with multiple cycles.  The second column `cycle_number` is a number corresponding to the cycle number of the image.  The third column `channel_count` is a count of the number of channels in the image.  The fourth column `image_tiles` is a path or URL to the input image file. 
+Each row of the samplesheet represents a single cycle `ome.tiff` microscopy image file. The first column `sample` is the sample identifier. It can be repeated in multiple rows for samples with multiple cycles. The second column `cycle_number` is a number corresponding to the cycle number of the image. The third column `channel_count` is a count of the number of channels in the image. The fourth column `image_tiles` is a path or URL to the input image file.
 
- `markersheet.csv`:
+`markersheet.csv`:
 
- ```csv
+```csv
 channel_number,cycle_number,marker_name
 21,1,DNA_6
 22,1,ELANE
 23,1,CD57
 24,1,CD45
- ```
+```
 
-Each row of the markersheet represents a single channel in the associated sample image.  The first column `channel_number` is an identifier for the respective channel.  The second column `cycle_number` corresponds to the cycle number of the image and it must match the `cycle_number` in the supplied samplesheet. The third column `marker_name` is the name of the marker for the given channel and cycle.
+Each row of the markersheet represents a single channel in the associated sample image. The first column `channel_number` is an identifier for the respective channel. The second column `cycle_number` corresponds to the cycle number of the image and it must match the `cycle_number` in the supplied samplesheet. The third column `marker_name` is the name of the marker for the given channel and cycle.
 
 > [!WARNING]
-> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_;
-> see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
+> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/usage/getting_started/configuration#custom-configuration-files).
 
 Now, you can run the pipeline using:
 
@@ -88,9 +88,10 @@ For more details about the output files and reports, please refer to the
 
 ## Credits
 
-nf-core/mcmicro was written by Rob Young and Jeremy Muhlich from the Laboratory of Systems Pharmacology at The Harvard University Medical School.  It is based on the Multiple-choice microscopy pipeline (MCMICRO) which was also developed there. 
+nf-core/mcmicro was written by Rob Young and Jeremy Muhlich from the Laboratory of Systems Pharmacology at The Harvard University Medical School. It is based on the Multiple-choice microscopy pipeline (MCMICRO) which was also developed there.
 
 We thank the following people for their assistance in the development of this pipeline:
+
 - [heylf](https://github.com/heylf)
 - [Florian Wuennemann](https://github.com/FloWuenne)
 - [Phil Ewels](https://github.com/ewels)

@@ -42,7 +42,7 @@ An [example one row per sample per cycle samplesheet](../assets/samplesheet_1_ro
 
 ### Samplesheet with one row per sample
 
-This is similar to the above case except each row just contains a column for each `sample` name and a columnn containing a directory where all the files for a given sample are located.  All per-cycle image files in the `image_directory` for a given sample will be run in a single run of ashlar. If illumination correction is requested using basicpy, each cycle will be corrected separately.
+This is similar to the above case except each row just contains a column for each `sample` name and a columnn containing a directory where all the files for a given sample are located. All per-cycle image files in the `image_directory` for a given sample will be run in a single run of ashlar. If illumination correction is requested using basicpy, each cycle will be corrected separately.
 
 ```csv title="samplesheet_sample.csv"
 sample,image_directory
@@ -58,27 +58,27 @@ An [example one row per sample samplesheet](../assets/samplesheet_1_row_sample.c
 
 ## Markersheet input
 
-Each row of the markersheet represents a single channel in the associated sample image.  The columns `channel_number`, `cycle_number` and `marker_name` are required.
+Each row of the markersheet represents a single channel in the associated sample image. The columns `channel_number`, `cycle_number` and `marker_name` are required.
 
- ```csv
+```csv
 channel_number,cycle_number,marker_name
 21,1,DNA_6
 22,1,ELANE
 23,1,CD57
 24,1,CD45
- ```
+```
 
-| Column            | Description                                          |
-| ----------------- | ---------------------------------------------------- |
-| `channel_number`  | Integer identifier for the respective channel.       |
-| `cycle_number`    | Integer identifier for the image cycle.              |
-| `marker_name`     | Name of the marker for the given channel and cycle.  |
+| Column           | Description                                         |
+| ---------------- | --------------------------------------------------- |
+| `channel_number` | Integer identifier for the respective channel.      |
+| `cycle_number`   | Integer identifier for the image cycle.             |
+| `marker_name`    | Name of the marker for the given channel and cycle. |
 
 :::note
 `cycle_number` must match the `cycle_number` in the supplied samplesheet.
 :::
 
- ### optional markersheet columns
+### optional markersheet columns
 
 | Column                  | Description                                             |
 | ----------------------- | ------------------------------------------------------- |
@@ -129,12 +129,12 @@ The above pipeline run specified with a params file in yaml format:
 nextflow run nf-core/mcmicro -profile docker -params-file params.yaml
 ```
 
-with `params.yaml` containing:
+with:
 
 ```yaml
-input_cycle: 'samplesheet_cycle.csv'
-outdir: './output'
-marker_sheet: 'markers.csv'
+input_cycle: "samplesheet_cycle.csv"
+outdir: "./output"
+marker_sheet: "markers.csv"
 ```
 
 You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-co.re/launch).
@@ -142,25 +142,31 @@ You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-c
 ### Pipeline stages and associated input parameters
 
 #### Illumination Correction
-Illumination correction can optionally be performed before registration.  It is triggered by the `--illumination` flag which can currently only be followed by the option `basicpy`.  We plan on supporting other modules for illumination correction in the future.
-When `basicpy` is selected the nf-core module basicpy is run on the input image(s).  Basicpy is a python package for background and shading correction of optical microscopy images.  More information about it can be found on the [basicpy nf-core module website](https://nf-co.re/modules/basicpy/).
+
+Illumination correction can optionally be performed before registration. It is triggered by the `--illumination` flag which can currently only be followed by the option `basicpy`. We plan on supporting other modules for illumination correction in the future.
+When `basicpy` is selected the nf-core module basicpy is run on the input image(s). Basicpy is a python package for background and shading correction of optical microscopy images. More information about it can be found on the [basicpy nf-core module website](https://nf-co.re/modules/basicpy/).
 
 #### Registration
-Registration is a required step of the pipeline and the only module currently supported is ashlar.  Ashlar is a software package that combines multi-tile microscopy images into a high-dimensional mosaic image. More information about ashlar can be found on the [ashlar website](https://labsyspharm.github.io/ashlar/).  We plan to support other modules for registration in the future.
+
+Registration is a required step of the pipeline and the only module currently supported is ashlar. Ashlar is a software package that combines multi-tile microscopy images into a high-dimensional mosaic image. More information about ashlar can be found on the [ashlar website](https://labsyspharm.github.io/ashlar/). We plan to support other modules for registration in the future.
 
 #### Background Subtraction
-This is an optional step that occurs immediately following registration.  It is triggered by the `--backsub` flag.  When this flag is selected, the module backsub is run on the output from the registration step.  The backsub module performs pixel-by-pixel channel subtraction scaled by exposure times of pre-stitched tif images.  More information about it can be found on the [backsub nf-core module website](https://nf-co.re/modules/backsub/).
+
+This is an optional step that occurs immediately following registration. It is triggered by the `--backsub` flag. When this flag is selected, the module backsub is run on the output from the registration step. The backsub module performs pixel-by-pixel channel subtraction scaled by exposure times of pre-stitched tif images. More information about it can be found on the [backsub nf-core module website](https://nf-co.re/modules/backsub/).
 
 #### TMI Core Separation
-This is an optional step that occurs immediately following background subtration if that optional step was run or after registration if is was not.  It is triggered by the `--tma_dearray` flag.  When this flag is selected, the coreograph module is run on the output from either the background subtraction step or the registration step if background subtration was not performed.  Coreograph separates the input image into a set of images for each of the cores. It uses UNet, a deep learning model, to identify complete/incomplete tissue cores on a tissue microarray. It has been trained on 9 TMA slides of different sizes and tissue types.  More information about it can be found on the [coreograph nf-core module website](https://nf-co.re/modules/coreograph/)
+
+This is an optional step that occurs immediately following background subtration if that optional step was run or after registration if is was not. It is triggered by the `--tma_dearray` flag. When this flag is selected, the coreograph module is run on the output from either the background subtraction step or the registration step if background subtration was not performed. Coreograph separates the input image into a set of images for each of the cores. It uses UNet, a deep learning model, to identify complete/incomplete tissue cores on a tissue microarray. It has been trained on 9 TMA slides of different sizes and tissue types. More information about it can be found on the [coreograph nf-core module website](https://nf-co.re/modules/coreograph/)
 
 #### Segmentation
-This is a required step that follows the TMI Core Separation step.  The workflow will run the deepcell_mesmer module by default, but other options are available by using the `--segmentation` flag.  The flag should be followed by a single segmentation module name or a comma separated list of names to run multiple segmentation modules in parallel.  The available options currently supported are `mesmer` and `cellpose`.  More information about each of these modules can be found on their respective nf-core module websites: [deepcell_mesmer](https://nf-co.re/modules/deepcell_mesmer/) [cellpose](https://nf-co.re/modules/cellpose/)
+
+This is a required step that follows the TMI Core Separation step. The workflow will run the deepcell_mesmer module by default, but other options are available by using the `--segmentation` flag. The flag should be followed by a single segmentation module name or a comma separated list of names to run multiple segmentation modules in parallel. The available options currently supported are `mesmer` and `cellpose`. More information about each of these modules can be found on their respective nf-core module websites: [deepcell_mesmer](https://nf-co.re/modules/deepcell_mesmer/) [cellpose](https://nf-co.re/modules/cellpose/)
 
 When `cellpose` is selected as a segmentation method you may also provide a pretrained model to the cellpose module by using the `--cellpose_model` flag followed by a full path or URL to the model file.
 
 #### Quantification
-This is a required step that follows segmentation.  The workflow currently runs the mcquant module by default.  Other quantification modules will be added as options in the future.  Mcquant extracts single-cell data given a multi-channel image and a segmentation mask.  More information about mcquant can be found on the [mcquant nf-core module website](https://nf-co.re/modules/mcquant/).
+
+This is a required step that follows segmentation. The workflow currently runs the mcquant module by default. Other quantification modules will be added as options in the future. Mcquant extracts single-cell data given a multi-channel image and a segmentation mask. More information about mcquant can be found on the [mcquant nf-core module website](https://nf-co.re/modules/mcquant/).
 
 ### Updating the pipeline
 
@@ -264,14 +270,6 @@ In most cases, you will only need to create a custom config as a one-off but if 
 See the main [Nextflow documentation](https://www.nextflow.io/docs/latest/config.html) for more information about creating your own configuration files.
 
 If you have any questions or issues please send us a message on [Slack](https://nf-co.re/join/slack) on the [`#configs` channel](https://nfcore.slack.com/channels/configs).
-
-## Azure Resource Requests
-
-To be used with the `azurebatch` profile by specifying the `-profile azurebatch`.
-We recommend providing a compute `params.vm_type` of `Standard_D16_v3` VMs by default but these options can be changed if required.
-
-Note that the choice of VM size depends on your quota and the overall workload during the analysis.
-For a thorough list, please refer the [Azure Sizes for virtual machines in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes).
 
 ## Running in the background
 
