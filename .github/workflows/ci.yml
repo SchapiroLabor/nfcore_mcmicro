@@ -49,7 +49,6 @@ jobs:
 
   test:
     name: "Run tests (${{ matrix.nf_test_files }} ${{ matrix.profile }} NF-${{ matrix.NXF_VER }})"
-    needs: [nf-test-changes]
     # Only run on push if this is the nf-core dev branch (merged PRs)
     needs: [nf-test-changes]
     if: "${{ (github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/mcmicro')) && needs.nf-test-changes.outputs.nf_test_files != '[]' }}"
