@@ -2,4 +2,4 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bioconda::ashlar=1.17.0
+  - bioconda::ashlar=1.18.0
