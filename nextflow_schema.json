@@ -79,6 +79,10 @@
                     "type": "string",
                     "description": "optional model file for cellpose segmentation"
                 },
+                "backsub": {
+                    "type": "boolean",
+                    "description": "boolean to flag whether or not to apply background subtraction"
+                },
                 "pixel_size": {
                     "type": "number",
                     "description": "Pixel width of input image data, in microns",
