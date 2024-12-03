@@ -35,7 +35,7 @@
                     },
                     "deepcell/mesmer": {
                         "branch": "master",
-                        "git_sha": "298406de7fb599b3a7acfed1dddb606ec182d4b6",
+                        "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
                         "installed_by": ["modules"]
                     },
                     "ilastik/multicut": {
