@@ -26,11 +26,11 @@
 
 If you want to run the original MCMICRO pipeline outside of nf-core, please see <https://mcmicro.org/>.
 
-The nf-core/mcmicro pipeline is an end-to-end processing pipeline that transforms multi-channel whole-slide images into single-cell data. It takes samplesheet and markersheet files as input and perfoms registration, segmentation and quantification. Multiple segmentation modules are available and can be run in parallel. The pipeline can also optionally perform background and shading correction, background subtraction, and supports TMI cores. It returns a pre-segmentation image file, a segmentation mask image, and a cell x feature array spreadsheet.
+The nf-core/mcmicro pipeline is an end-to-end processing pipeline that transforms multi-channel whole-slide images into single-cell data. It takes samplesheet and markersheet files as input and perfoms registration, segmentation and quantification. Multiple segmentation modules are available and can be run in parallel. The pipeline can also optionally perform background and shading correction, background subtraction, and supports tissue microarrays. It returns a pre-segmentation image file, a segmentation mask image, and a cell x feature array spreadsheet.
 
 ![nf-core/mcmicro metro diagram](assets/mcmicro_metro.png)
 
-The MC in MCMICRO stands for 'Multiple Choice' and that refers to the fact that there will be multiple module options available for most steps in the pipeline. The currently supported options are provided in parentheses for required steps.
+The MC in MCMICRO stands for 'Multiple Choice' and that refers to the fact that there will be multiple module options available for many steps in the pipeline. The currently supported options are provided in parentheses for required steps.
 
 1. Registration ([Ashlar](https://nf-co.re/modules/ashlar/))
 2. Segmentation ([Cellpose](https://nf-co.re/modules/cellpose/), [Mesmer](https://nf-co.re/modules/deepcell_mesmer/))
@@ -47,7 +47,7 @@ First, prepare a samplesheet and markersheet with your input data that looks as 
 
 ```csv
 sample,cycle_number,channel_count,image_tiles
-TEST1,1,10,https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/imaging/ome-tiff/cycif-tonsil-cycle1.ome.tif
+TEST1,1,4,https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/imaging/ome-tiff/cycif-tonsil-cycle1.ome.tif
 
 ```
 
