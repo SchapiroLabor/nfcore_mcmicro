@@ -88,7 +88,7 @@ For more details about the output files and reports, please refer to the
 
 ## Credits
 
-nf-core/mcmicro was written by Rob Young and Jeremy Muhlich from the Laboratory of Systems Pharmacology at The Harvard University Medical School. It is based on the Multiple-choice microscopy pipeline (MCMICRO) which was also developed there.
+nf-core/mcmicro was written by Rob Young and Jeremy Muhlich from the Laboratory of Systems Pharmacology at Harvard Medical School. It is based on version 1.0 of mcmicro (labsyspharm/mcmicro) which was also developed there.
 
 We thank the following people for their assistance in the development of this pipeline:
 
