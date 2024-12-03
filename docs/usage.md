@@ -83,7 +83,7 @@ channel_number,cycle_number,marker_name
 | Column                  | Description                                             |
 | ----------------------- | ------------------------------------------------------- |
 | `filter`                | Microscope filter common name.                               |
-| `excitation_wavelength` | Wavelength of light that is absorbed by current marker. |
+| `excitation_wavelength` | Excitation wavelength for this channel, in nm. |
 | `emission_wavelength`   | Wavelength of light that is emitted by current marker.  |
 
 ## Running the pipeline
