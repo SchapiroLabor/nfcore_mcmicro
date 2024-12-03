@@ -82,7 +82,7 @@ channel_number,cycle_number,marker_name
 
 | Column                  | Description                                             |
 | ----------------------- | ------------------------------------------------------- |
-| `filter`                | Filter applied to marker.                               |
+| `filter`                | Microscope filter common name.                               |
 | `excitation_wavelength` | Wavelength of light that is absorbed by current marker. |
 | `emission_wavelength`   | Wavelength of light that is emitted by current marker.  |
 
