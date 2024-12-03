@@ -100,7 +100,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <details>
 <summary>Output files</summary>
 
-- _[0-9]_.tif : Complete/Incomplete tissue cores
+- {core_number}.tif : Individual cropped tissue core images
 - centroidsY-X.txt : A text file listing centroids of each core in format Y, X
 - masks/{image_count}\_mask.tif : Binary masks for the Complete/Incomplete tissue cores
 - TMA_MAP.tif : A TMA map showing labels and outlines
