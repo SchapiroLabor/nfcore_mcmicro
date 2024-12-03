@@ -57,10 +57,10 @@ Each row of the samplesheet represents a single cycle `ome.tiff` microscopy imag
 
 ```csv
 channel_number,cycle_number,marker_name
-21,1,DNA_6
-22,1,ELANE
-23,1,CD57
-24,1,CD45
+1,1,DNA 1
+2,1,Na/K ATPase
+3,1,CD3
+4,1,CD45RO
 ```
 
 Each row of the markersheet represents a single channel in the associated sample image. The first column `channel_number` is an identifier for the respective channel. The second column `cycle_number` corresponds to the cycle number of the image and it must match the `cycle_number` in the supplied samplesheet. The third column `marker_name` is the name of the marker for the given channel and cycle.

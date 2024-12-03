@@ -62,10 +62,10 @@ Each row of the markersheet represents a single channel in the associated sample
 
 ```csv
 channel_number,cycle_number,marker_name
-21,1,DNA_6
-22,1,ELANE
-23,1,CD57
-24,1,CD45
+1,1,DNA 1
+2,1,Na/K ATPase
+3,1,CD3
+4,1,CD45RO
 ```
 
 | Column           | Description                                         |
