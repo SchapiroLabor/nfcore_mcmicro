@@ -17,13 +17,13 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
   - [ASHLAR](#ashlar)
 - [Background Subtraction](#background-subtraction)
   - [Backsub](#backsub)
-- [TMI Core Separation](#tmi-core-separation)
+- [TMA Core Separation](#tma-core-separation)
   - [Coreograph](#coreograph)
 - [Segmentation](#segmentation)
   - [Mesmer](#mesmer)
   - [Cellpose](#cellpose)
 - [Quantification](#quantification)
-  - [MultiQC](#multiqc)
+- [MultiQC](#multiqc)
 - [Pipeline information](#pipeline-information)
 
 ### Directory Structure
@@ -59,8 +59,8 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <details>
 <summary>Output files</summary>
 
-- {sample_name}.ome-dfp.{tiff,tif} : Tiff fields for dark field illumination correction
-- {sample_name}.ome-ffp.{tiff,tif} : Tiff fields for flat field illumination correction
+- {sample_name}-dfp.tif : Tiff fields for dark field illumination correction
+- {sample_name}-ffp.tif : Tiff fields for flat field illumination correction
 
 </details>
 
@@ -73,7 +73,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <details>
 <summary>Output files</summary>
 
-- {sample_name}.ome.{tiff,tif} : A pyramidal, tiled OME-TIFF file created from input images.
+- {sample_name}.ome.tif : A pyramidal, tiled OME-TIFF file created from input images.
 
 </details>
 
@@ -87,11 +87,11 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <summary>Output files</summary>
 
 - markers_bs.csv : Marker file adjusted to match the background corrected image
-- {sample_name}.backsub.ome.{tiff,tif} : Background corrected pyramidal ome.tif
+- .backsub.ome.tif : Background corrected pyramidal ome.tif
 
 </details>
 
-### TMI Core Separation
+### TMA Core Separation
 
 #### Coreograph
 
@@ -140,13 +140,13 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <details>
 <summary>Output files</summary>
 
-- *.csv : Single-cell feature table for all selected segmenters, for each segmented cell compartment.
+- \*.csv : Single-cell feature table for all selected segmenters, for each segmented cell compartment.
 
 </details>
 
 ### Quality Control
 
-#### MultiQC
+### MultiQC
 
 Aggregate report describing results and QC from the whole pipeline
 
@@ -180,28 +180,3 @@ Report metrics generated during the workflow execution
 </details>
 
 [Nextflow](https://www.nextflow.io/docs/latest/tracing.html) provides excellent functionality for generating various reports relevant to the running and execution of the pipeline. This will allow you to troubleshoot errors with the running of the pipeline, and also provide you with other information such as launch commands, run times and resource usage.
-
-<!-- Not currently using FastQC so commenting out for now
-### FastQC
- Raw read QC
-<details markdown="1">
-<summary>Output files</summary>
-
-- `fastqc/`
-  - `*_fastqc.html`: FastQC report containing quality metrics.
-  - `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
-
-</details>
-
-[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) gives general quality metrics about your sequenced reads. It provides information about the quality score distribution across your reads, per base sequence content (%A/T/G/C), adapter contamination and overrepresented sequences. For further reading and documentation see the [FastQC help pages](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).
-
-![MultiQC - FastQC sequence counts plot](images/mqc_fastqc_counts.png)
-
-![MultiQC - FastQC mean quality scores plot](images/mqc_fastqc_quality.png)
-
-![MultiQC - FastQC adapter content plot](images/mqc_fastqc_adapter.png)
-
-:::note
-The FastQC plots displayed in the MultiQC report shows _untrimmed_ reads. They may contain adapter sequence and potentially regions with low quality.
-:::
--->

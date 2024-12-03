@@ -80,11 +80,11 @@ channel_number,cycle_number,marker_name
 
 ### optional markersheet columns
 
-| Column                  | Description                                             |
-| ----------------------- | ------------------------------------------------------- |
-| `filter`                | Microscope filter common name.                               |
+| Column                  | Description                                    |
+| ----------------------- | ---------------------------------------------- |
+| `filter`                | Microscope filter common name.                 |
 | `excitation_wavelength` | Excitation wavelength for this channel, in nm. |
-| `emission_wavelength`   | Emission wavelength for this channel, in nm.  |
+| `emission_wavelength`   | Emission wavelength for this channel, in nm.   |
 
 ## Running the pipeline
 
@@ -154,13 +154,13 @@ Registration is a required step of the pipeline and the only module currently su
 
 This is an optional step that occurs immediately following registration. It is triggered by the `--backsub` flag. When this flag is selected, the module backsub is run on the output from the registration step. The backsub module performs pixel-by-pixel channel subtraction scaled by exposure times of pre-stitched tif images. More information about it can be found on the [backsub nf-core module website](https://nf-co.re/modules/backsub/).
 
-#### TMI Core Separation
+#### TMA Core Separation
 
 This is an optional step that occurs immediately following background subtration if that optional step was run or after registration if is was not. It is triggered by the `--tma_dearray` flag. When this flag is selected, the coreograph module is run on the output from either the background subtraction step or the registration step if background subtration was not performed. Coreograph separates the input image into a set of images for each of the cores. It uses UNet, a deep learning model, to identify complete/incomplete tissue cores on a tissue microarray. It has been trained on 9 TMA slides of different sizes and tissue types. More information about it can be found on the [coreograph nf-core module website](https://nf-co.re/modules/coreograph/)
 
 #### Segmentation
 
-This is a required step that follows the TMI Core Separation step. The workflow will run the deepcell_mesmer module by default, but other options are available by using the `--segmentation` flag. The flag should be followed by a single segmentation module name or a comma separated list of names to run multiple segmentation modules in parallel. The available options currently supported are `mesmer` and `cellpose`. More information about each of these modules can be found on their respective nf-core module websites: [deepcell_mesmer](https://nf-co.re/modules/deepcell_mesmer/) [cellpose](https://nf-co.re/modules/cellpose/)
+This is a required step that follows the TMA Core Separation step. The workflow will run the deepcell_mesmer module by default, but other options are available by using the `--segmentation` flag. The flag should be followed by a single segmentation module name or a comma separated list of names to run multiple segmentation modules in parallel. The available options currently supported are `mesmer` and `cellpose`. More information about each of these modules can be found on their respective nf-core module websites: [deepcell_mesmer](https://nf-co.re/modules/deepcell_mesmer/) [cellpose](https://nf-co.re/modules/cellpose/)
 
 When `cellpose` is selected as a segmentation method you may also provide a pretrained model to the cellpose module by using the `--cellpose_model` flag followed by a full path or URL to the model file.
 
