@@ -140,7 +140,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <details>
 <summary>Output files</summary>
 
-- {sample*name}\_mask*{sample_name}.csv : Quantified regionprops_table
+- *.csv : Single-cell feature table for all selected segmenters, for each segmented cell compartment.
 
 </details>
 
