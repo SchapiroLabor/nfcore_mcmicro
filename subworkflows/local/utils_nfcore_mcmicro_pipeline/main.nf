@@ -252,6 +252,19 @@ def validateInputSamplesheetMarkersheet ( samples, markers ) {
     if (marker_cycles.unique(false) != sample_cycles.unique(false) ) {
         error("cycle_number values must match between sample and marker sheets")
     }
+
+    // TODO: should the following test be in a separate validateInputSamplesheet() function?
+
+    def channel_cycle_map = samples.collect{ meta, image_tiles, dfp, ffp -> [meta.id,meta.cycle_number] }.groupBy{ it[0] }
+    channel_cycle_map.each { entry ->
+        last_val = -1
+        entry.value.collect{ it[1] }.each{ curr_val ->
+            if (last_val != -1 && (curr_val > (last_val + 1) || curr_val <= last_val)) {
+                error("cycle_number values must be increasing with no gaps")
+            }
+            last_val = curr_val
+        }
+    }
 }
 
 def expandSampleRow( row ) {
