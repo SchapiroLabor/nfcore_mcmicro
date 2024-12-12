@@ -1,9 +1,9 @@
-bump_version: null
 lint:
+  files_unchanged:
+    - .gitignore
   nextflow_config:
     - params.input
-nf_core_version: 3.0.2
-org_path: null
+nf_core_version: 3.1.0
 repository_type: pipeline
 template:
   author: TBD
@@ -13,6 +13,4 @@ template:
   name: mcmicro
   org: nf-core
   outdir: .
-  skip_features: null
   version: 2.0.0
-update: null
