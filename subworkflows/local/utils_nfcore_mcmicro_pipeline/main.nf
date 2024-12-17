@@ -287,9 +287,6 @@ def expandSampleRow( row ) {
 def toolCitationText() {
     // Can use ternary operators to dynamically construct based conditions, e.g. params["run_xyz"] ? "Tool (Foo et al. 2023)" : "",
     // Uncomment function in methodsDescriptionText to render in MultiQC report
-    // TODO: not sure of the correct syntax for the ternary operators below.
-    //       Is this ok or does it need to be enclosed in curly braces to make them closures?
-    //       I don't see examples in sarek, rnaseq or other pipelines
     def citation_text = [
             "Tools used in the workflow included:",
             params["illumination"] ? "Basicpy (Peng et al. 2017)," : "",

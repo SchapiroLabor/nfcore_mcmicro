@@ -67,3 +67,14 @@
 - [Singularity](https://pubmed.ncbi.nlm.nih.gov/28494014/)
 
   > Kurtzer GM, Sochat V, Bauer MW. Singularity: Scientific containers for mobility of compute. PLoS One. 2017 May 11;12(5):e0177459. doi: 10.1371/journal.pone.0177459. eCollection 2017. PubMed PMID: 28494014; PubMed Central PMCID: PMC5426675.
+
+## Test Data
+
+- cycif-tonsil-cycle\*.ome.tif<br>
+  Human tonsil section 5 μm thick, imaged in four-channel immunofluorescence over three rounds of bleaching and re-staining with different antibodies. Published in https://doi.org/10.1038/s41592-021-01308-y (slide WD-75684-02). These image files each contain a 3 x 3 grid of overlapping four-channel image tiles with dimensions 220 x 180 pixels. The tiles were cropped from a single raw tile taken from one of the original data files. A Python script (https://github.com/labsyspharm/nf-core-test-datasets-build/blob/main/tonsil-cycif/tonsil-cycif.py) was written to extract the synthetic tile fields from an "interesting" region of the single raw tile, generate stage position metadata with random perturbations to approximate the behavior of a real-world microscope stage, and save the images and metadata as an OME-TIFF file.
+
+- cycif-tonsil-dfp.ome.tif, cycif-tonsil-ffp.ome.tif<br>
+  Dark-field (dfp) and flat-field (ffp) illumination correction profiles for cycif-tonsil-cycle\*.ome.tif. The dfp profile is all zeros and the ffp profile is all ones and thus will not modify the image when applied, but the images are the correct shape for this data.
+
+- cycif-tonsil-channels.csv<br>
+  A three-column table containing channel number, imaging cycle number, and marker (target of the fluorescently labeled antibody or other stain) for each channel in each imaging cycle, useful for downstream tools expecting channel annotation.
