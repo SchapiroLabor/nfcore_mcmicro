@@ -20,6 +20,7 @@ include { COREOGRAPH             } from '../modules/nf-core/coreograph/main'
 include { DEEPCELL_MESMER        } from '../modules/nf-core/deepcell/mesmer/main'
 include { SCIMAP_MCMICRO         } from '../modules/nf-core/scimap/mcmicro/main'
 include { MCQUANT                } from '../modules/nf-core/mcquant/main'
+include { ROADIE_RECYZE          } from'../modules/local/roadie/recyze/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -108,6 +109,9 @@ workflow MCMICRO {
     } else {
         ch_segmentation_input = post_registration
     }
+
+    ROADIE_RECYZE(ch_segmentation_input)
+    ROADIE_RECYZE.out.extracted_channels.view()
 
     // Run Segmentation
 
