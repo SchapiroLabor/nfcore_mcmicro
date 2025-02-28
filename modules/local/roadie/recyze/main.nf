@@ -6,23 +6,22 @@ process ROADIE_RECYZE {
 
     input:
     tuple val(meta), path(image)
+    val(channels)
 
     output:
     tuple val(meta), path("*.tif"), emit: extracted_channels
     path "versions.yml"           , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
-
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def channels_str = channels.join(' ')
 
     """
     recyze.py \\
         --in ${image} \\
         --out ${prefix}.tif \\
-        --channels 0 \\
+        --channels ${channels_str} \\
         --num-threads $task.cpus \\
         $args \\
 
