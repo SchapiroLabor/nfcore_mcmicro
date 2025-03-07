@@ -260,7 +260,7 @@ class PyramidWriter:
                     print()
             self.metadata.images[0].pixels.channels = [self.metadata.images[0].pixels.channels[i] for i in
                                                     self.channels]
-            self.metadata.uuid = uuid.uuid4().urn
+            #self.metadata.uuid = uuid.uuid4().urn
             self.metadata.images[0].pixels.size_c = self.num_channels
             self.metadata.images[0].pixels.size_x = self.width
             self.metadata.images[0].pixels.size_y = self.height
@@ -308,6 +308,7 @@ if __name__ == '__main__':
         '--num-threads', type=int, required=False, default=0, metavar="N",
         help="Worker thread count (Default: auto-scale based on number of available CPUs)",
     )
+    parser.add_argument('--version', action='version', version='2.0.0dev')
     args = parser.parse_args()
 
     # Automatically infer the output filename, if not specified
