@@ -78,7 +78,7 @@ workflow MCMICRO {
     if (params.backsub) {
         ch_backsub_markers = ch_markersheet
             .map { ['channel_number,cycle_number,marker_name,exposure,background,remove',
-                it.collect{ channel_number, cycle_number, marker_name, _1, _2, _3, exposure, background, remove ->
+                it.collect{ channel_number, cycle_number, marker_name, _1, _2, _3, exposure, background, remove, _10 ->
                     channel_number + "," + cycle_number + "," + marker_name + "," + exposure + "," + background + "," + remove}] }
             .flatten()
             .map { it.replace('[]', '') }
@@ -115,7 +115,7 @@ workflow MCMICRO {
             row.collect { channel_number, _2, _3, _4, _5, _6, _7, _8, _9, segmentation_channel ->
                 segmentation_channel ? (channel_number - 1) : null
             }
-        }.view()
+        }
 
     if (params.segmentation_recyze) {
         ch_roadie_channels = ch_markersheet

@@ -215,6 +215,7 @@
         "content": [
             "TEST1.ome.tif:md5,988bbb2c74d47dc22a9f3ac348f53ef5",
             "TEST1.ome_cp_masks.tif:md5,47bd29c261db5fe062ee35c1b5daccc1",
+            "TEST1.tif:md5,a30d0f098ed8ccfa63cdaa95d89f2560",
             "TEST1_TEST1.csv:rounded:md5,42ecd15013bea6dbea4e0343c7b0bef7"
         ],
         "meta": {
