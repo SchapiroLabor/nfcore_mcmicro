@@ -77,7 +77,7 @@ workflow MCMICRO {
     if (params.backsub) {
         ch_backsub_markers = ch_markersheet
             .map { ['channel_number,cycle_number,marker_name,exposure,background,remove',
-                it.collect{ channel_number, cycle_number, marker_name, _1, _2, _3, exposure, background, remove ->
+                it.collect{ channel_number, cycle_number, marker_name, _4, _5, _6, exposure, background, remove ->
                     channel_number + "," + cycle_number + "," + marker_name + "," + exposure + "," + background + "," + remove}] }
             .flatten()
             .map { it.replace('[]', '') }
@@ -131,10 +131,12 @@ workflow MCMICRO {
     ch_masks = ch_masks.mix(CELLPOSE.out.mask)
     ch_versions = ch_versions.mix(CELLPOSE.out.versions)
 
-    // Run Quantification
-
-    // Generate markers.csv for mcquant with just the marker_name column.
     ch_mcquant_markers = ch_markersheet
+        .flatMap()
+        .filter { row ->
+            row[8].toString() == '[]'  // Keep rows where the 'remove' column is not '[]'
+        }
+        .toList()
         .flatMap{
             ['marker_name'] +
             it.collect{ _1, _2, marker_name, _4, _5, _6, _7, _8, _9 -> '"' + marker_name + '"' }

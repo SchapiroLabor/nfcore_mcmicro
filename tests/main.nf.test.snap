@@ -124,7 +124,6 @@
                     "Na/K ATPase",
                     "CD3",
                     "CD45RO",
-                    "DNA 2",
                     "Antigen Ki67",
                     "Pan-cytokeratin",
                     "Aortic smooth muscle actin",
@@ -140,13 +139,13 @@
                 ],
                 "rowCount": 2111
             },
-            "TEST1.backsub.ome.tif:md5,f2c6c4a1c5b554b39b651b702f49335d"
+            "TEST1.backsub.ome.tif:md5,1be44fc5c0a60557bff3c2d0c69c2f41"
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "24.10.5"
         },
-        "timestamp": "2025-03-24T13:49:54.928936106"
+        "timestamp": "2025-03-25T14:57:17.455670557"
     },
     "cycle: multiple file ashlar input with multiple samples no correction, multiple segmentation": {
         "content": [

@@ -270,16 +270,16 @@ def validateInputMarkersheet(markersheet_data, schema_file, params) {
         marker_data.each { row ->
             if (row.background != null) {
                 if (row.exposure == null) {
-                    error("Missing exposure value for marker '${row.marker_name}' with background '${row.background}'.")
+                    error("Error in marker sheet: Missing exposure value for marker '${row.marker_name}' with background '${row.background}'.")
                 }
                 if (!marker_name_list.contains(row.background)) {
-                    error("Background value '${row.background}' specified for marker '${row.marker_name}' does not exist in the marker_name column.")
+                    error("Error in marker sheet: Background value '${row.background}' specified for marker '${row.marker_name}' does not exist in the marker_name column.")
                 }
             }
 
             // Check if this marker is used as a background and ensure it has an exposure value
             if (markers_used_as_background.contains(row.marker_name) && row.exposure == null) {
-                error("Marker '${row.marker_name}' is used as a background for another marker but does not have an exposure value.")
+                error("Error in marker sheet: Marker '${row.marker_name}' is used as a background for another marker but does not have an exposure value.")
             }
         }
     }
