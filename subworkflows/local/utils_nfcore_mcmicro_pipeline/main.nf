@@ -239,6 +239,56 @@ def validateInputMarkersheet(markersheet_data, schema_file, params) {
         }
     }
 
+
+    if (params.segmentation_recyze) {
+        // Extract segmentation_channel and segmentation_compartment values
+        def segmentation_data = markersheet_data.findResults { _1, _2, _3, _4, _5, _6, _7, _8, _9, segmentation_channels, segmentation_compartment ->
+            [segmentation_channels, segmentation_compartment]
+        }
+        // Validate 'segmentation_compartment' values
+        def invalid_compartment_rows = segmentation_data.findAll { segmentation_channel, segmentation_compartment ->
+            (segmentation_channel != true && segmentation_compartment != [])
+        }
+        if (invalid_compartment_rows != []) {
+            error "The 'segmentation_compartment' column must only have values where 'segmentation_channel' is TRUE."
+        }
+
+        // Check if the 'segmentation_channel' column exists
+        def segmentation_channel_list = segmentation_data*.getAt(0)
+        if (segmentation_channel_list.isEmpty()) {
+            error "The 'segmentation_channel' column is missing from the markersheet or all values are null. This column is required when params.segmentation_recyze is given."
+        }
+
+        // Check if at least one value in the 'segmentation_channel' column is TRUE
+        def hasSegmentationChannel = segmentation_channel_list.any { it == true }
+        if (!hasSegmentationChannel) {
+            error "The 'segmentation_channel' column must have at least one TRUE value when params.segmentation_recyze is given."
+        }
+
+        def compartments_exist = segmentation_data.findAll { segmentation_channel, segmentation_compartment ->
+            segmentation_channel == true && segmentation_compartment != null
+        }
+        def compartments_missing = segmentation_data.findAll { segmentation_channel, segmentation_compartment ->
+            segmentation_channel == true && segmentation_compartment == null
+        }
+        if (compartments_exist && compartments_missing) {
+            error "Inconsistent segmentation_compartment values: Either all or none of the segmentation_compartment values must exist where segmentation_channel is TRUE."
+        }
+
+        // Check for duplicate compartments when 'segmentation_channel' is TRUE
+        def compartments_with_true_channel = segmentation_data.findAll { segmentation_channel, segmentation_compartment ->
+            segmentation_channel == true && segmentation_compartment != null
+        }*.getAt(1)
+
+        def duplicate_compartments = compartments_with_true_channel.groupBy { it }.findAll { key, value -> value.size() > 1 }
+        if (!duplicate_compartments.isEmpty() && !params.segmentation_max_projection) {
+            error "Duplicate segmentation_compartment values found where 'segmentation_channel' is TRUE. Set params.segmentation_max_projection to TRUE to allow this."
+        }
+        else if (duplicate_compartments.isEmpty() && params.segmentation_max_projection) {
+            error "params.segmentation_max_projection is set to TRUE but no compartment repeats. Please set it to false."
+        }
+
+    }
     // uniqueness of (channel, cycle) tuple in marker sheet
     def test_tuples = [channel_number_list, cycle_number_list].transpose()
     def dups = test_tuples.countBy{ it }.findAll{ _1, count -> count > 1 }*.key
@@ -289,7 +339,7 @@ def validateInputMarkersheet(markersheet_data, schema_file, params) {
 
 def validateInputSamplesheetMarkersheet ( samples, markers ) {
     def sample_cycles = samples.collect{ meta, image_tiles, dfp, ffp -> meta.cycle_number }
-    def marker_cycles = markers.collect{ channel_number, cycle_number, marker_name, _4, _5, _6, _7, _8, _9 -> cycle_number }
+    def marker_cycles = markers.collect{ channel_number, cycle_number, marker_name, _4, _5, _6, _7, _8, _9, _10, _11 -> cycle_number }
 
     if (marker_cycles.unique(false) != sample_cycles.unique(false) ) {
         error("cycle_number values must match between sample and marker sheets")

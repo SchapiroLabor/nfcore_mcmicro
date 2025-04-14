@@ -45,6 +45,13 @@
             },
             "remove": {
                 "type": "boolean"
+            },
+            "segmentation_channel": {
+                "type": "boolean"
+            },
+            "segmentation_compartment": {
+                "type": "string",
+                "pattern": "^(nucleus|cytoplasm|membrane)$"
             }
         },
         "required": ["channel_number", "cycle_number", "marker_name"]
