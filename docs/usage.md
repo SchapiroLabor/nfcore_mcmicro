@@ -160,7 +160,7 @@ This is an optional step that occurs immediately following background subtration
 
 #### Channel extraction for segmentation
 
-Channel extraction from preprocessed images that can be passed to segmentation tools can be done using `recyze` by adding the `--segmentation_recyze` parameter and specifying channels to be extracted in the markersheet. By default, the whole stack is passed to segmentation tools.
+Channel extraction for segmentation can be performed by setting the `segmentation_recyze` parameter to `true` which runs a custom process that extracts specified channels and can perform max projection. Control over what is passed to segmentation tools can be done in the markersheet by adding the optional `segmentation_channel` and `segmentation_compartment` columns. `segmentation_channel` should have values set to `TRUE` for channels that should be utilized for segmentation and extracted. If there is no `segmentation_comparment` value specified, the output is a stack containing requested channels. Additionally, by specifying the `segmentation_compartment` values to `nucleus` or `membrane` for channels where `segmentation_channel` is set to `TRUE`, individual channels are written to files (which is needed if using Deepcell Mesmer). If `segmentation_max_projection` is set to `true`, and multiple `nucleus` or `membrane` values are found in the markersheet, max projection will be applied on the specified compartments.
 
 #### Segmentation
 
