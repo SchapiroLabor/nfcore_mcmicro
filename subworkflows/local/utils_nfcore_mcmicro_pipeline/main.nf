@@ -270,6 +270,9 @@ def validateInputMarkersheet(markersheet_data, schema_file, params) {
             error "Error: For rows where segmentation_channel is true, either all or none of the segmentation_compartment values must be defined."
         }
 
+        if (missing_compartment && params.segmentation_max_projection) {
+            error "Error: Segmentation_max_projection is set to true but no compartments provided."
+        }
         // Validate that segmentation_compartment values only appear where segmentation_channel is true
         def invalid_compartments = marker_data.findAll { it.segmentation_compartment != null && !it.segmentation_channel }
         if (invalid_compartments) {

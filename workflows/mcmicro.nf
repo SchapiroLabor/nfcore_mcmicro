@@ -143,20 +143,24 @@ workflow MCMICRO {
         ch_segmentation_input_extracted = ROADIE_RECYZE.out.extracted_channels
 
         // // Extracting the emitted channels
+
         ch_extracted = ROADIE_RECYZE.out.extracted_channels
         mesmer_channels = ROADIE_RECYZE.out.extracted_channels
-            .combine(ROADIE_RECYZE.out.nuclear_single_channel.ifEmpty([]))
-            .combine(ROADIE_RECYZE.out.membrane_single_channel.ifEmpty([]))
-            .map { items ->
-                switch (items.size()) {
+            .concat(ROADIE_RECYZE.out.nuclear_single_channel)
+            .concat(ROADIE_RECYZE.out.membrane_single_channel)
+            .groupTuple( by: 0 )
+            .map { meta, values ->
+                // Flatten the grouped values into a single list
+                def flattened_values = values.flatten()
+                switch (flattened_values.size()) {
+                    case 1:
+                        return [meta, flattened_values[0], []]
                     case 2:
-                        return [items[0], items[1], []]
-                    case 4:
-                        return [items[0], items[3], []]
-                    case 6:
-                        return [items[0], items[3], items[5]]
+                        return [meta, flattened_values[1], []]
+                    case 3:
+                        return [meta, flattened_values[1], flattened_values[2]]
                     default:
-                        return items
+                        return [meta] + flattened_values
                 }
             }
 
@@ -164,7 +168,6 @@ workflow MCMICRO {
         ch_segmentation_input_extracted = ch_segmentation_input
         mesmer_channels = ch_segmentation_input.map {[it[0], it[1], []]}
     }
-
     // Run Segmentation
 
     ch_masks = Channel.empty()
