@@ -201,15 +201,17 @@ def validateInputMarkersheet(markersheet_data, schema_file, params) {
 
     // Collect all marker data
     def marker_data = markersheet_data.collect { row ->
-        [
-            marker_name: row[column_indices['marker_name']],
-            channel_number: row[column_indices['channel_number']] as int,
-            cycle_number: row[column_indices['cycle_number']] as int,
-            background: row[column_indices['background']] != [] ? row[column_indices['background']] : null,
-            exposure: row[column_indices['exposure']] != [] ? row[column_indices['exposure']] : null,
-            remove: column_indices.containsKey('remove') ? (row[column_indices['remove']] != [] ? row[column_indices['remove']] : null) : null
-        ]
-    }
+            [
+                marker_name: row[column_indices['marker_name']],
+                channel_number: row[column_indices['channel_number']] as int,
+                cycle_number: row[column_indices['cycle_number']] as int,
+                background: row[column_indices['background']] != [] ? row[column_indices['background']] : null,
+                exposure: row[column_indices['exposure']] != [] ? row[column_indices['exposure']] : null,
+                remove: row[column_indices['remove']] != [] ? row[column_indices['remove']] : null,
+                segmentation_channel: row[column_indices['segmentation_channel']] != [] ? row[column_indices['segmentation_channel']] : null,
+                segmentation_compartment: row[column_indices['segmentation_compartment']] != [] ? row[column_indices['segmentation_compartment']] : null,
+            ]
+        }
 
     // Validate basic requirements and collect lists
     marker_data.each { row ->
@@ -240,55 +242,49 @@ def validateInputMarkersheet(markersheet_data, schema_file, params) {
     }
 
 
-    if (params.segmentation_recyze) {
-        // Extract segmentation_channel and segmentation_compartment values
-        def segmentation_data = markersheet_data.findResults { _1, _2, _3, _4, _5, _6, _7, _8, _9, segmentation_channels, segmentation_compartment ->
-            [segmentation_channels, segmentation_compartment]
+    // Validate roadie data
+    // Check if segmentation_recyze columns are present
+    def roadie_columns = ['segmentation_channel', 'segmentation_compartment']
+    def has_roadie_columns = markersheet_data.any { row ->
+        roadie_columns.any { column ->
+            row[column_indices[column]] && row[column_indices[column]] != []
         }
-        // Validate 'segmentation_compartment' values
-        def invalid_compartment_rows = segmentation_data.findAll { segmentation_channel, segmentation_compartment ->
-            (segmentation_channel != true && segmentation_compartment != [])
-        }
-        if (invalid_compartment_rows != []) {
-            error "The 'segmentation_compartment' column must only have values where 'segmentation_channel' is TRUE."
-        }
-
-        // Check if the 'segmentation_channel' column exists
-        def segmentation_channel_list = segmentation_data*.getAt(0)
-        if (segmentation_channel_list.isEmpty()) {
-            error "The 'segmentation_channel' column is missing from the markersheet or all values are null. This column is required when params.segmentation_recyze is given."
-        }
-
-        // Check if at least one value in the 'segmentation_channel' column is TRUE
-        def hasSegmentationChannel = segmentation_channel_list.any { it == true }
-        if (!hasSegmentationChannel) {
-            error "The 'segmentation_channel' column must have at least one TRUE value when params.segmentation_recyze is given."
-        }
-
-        def compartments_exist = segmentation_data.findAll { segmentation_channel, segmentation_compartment ->
-            segmentation_channel == true && segmentation_compartment != null
-        }
-        def compartments_missing = segmentation_data.findAll { segmentation_channel, segmentation_compartment ->
-            segmentation_channel == true && segmentation_compartment == null
-        }
-        if (compartments_exist && compartments_missing) {
-            error "Inconsistent segmentation_compartment values: Either all or none of the segmentation_compartment values must exist where segmentation_channel is TRUE."
-        }
-
-        // Check for duplicate compartments when 'segmentation_channel' is TRUE
-        def compartments_with_true_channel = segmentation_data.findAll { segmentation_channel, segmentation_compartment ->
-            segmentation_channel == true && segmentation_compartment != null
-        }*.getAt(1)
-
-        def duplicate_compartments = compartments_with_true_channel.groupBy { it }.findAll { key, value -> value.size() > 1 }
-        if (!duplicate_compartments.isEmpty() && !params.segmentation_max_projection) {
-            error "Duplicate segmentation_compartment values found where 'segmentation_channel' is TRUE. Set params.segmentation_max_projection to TRUE to allow this."
-        }
-        else if (duplicate_compartments.isEmpty() && params.segmentation_max_projection) {
-            error "params.segmentation_max_projection is set to TRUE but no compartment repeats. Please set it to false."
-        }
-
     }
+    // Throw error if segmentation_recyze = false but roadie columns are present
+    if (!params.segmentation_recyze && has_roadie_columns) {
+        error "Error: channels specified for segmentation processing, but params.segmentation_recyze is false. Please set params.segmentation_recyze to true."
+    }
+    else if (params.segmentation_recyze) {
+
+        def has_segmentation_channel = marker_data.any { it.segmentation_channel != null }
+        if (!has_segmentation_channel) {
+            error "Error: params.segmentation_recyze is set to true, but no segmentation channels are defined"
+        }
+
+        // Validate that for rows where segmentation_channel is true, all or none of the segmentation_compartment values are missing
+        def rows_with_true_channel = marker_data.findAll { it.segmentation_channel == true }
+        def has_compartment = rows_with_true_channel.any { it.segmentation_compartment != null }
+        def missing_compartment = rows_with_true_channel.any { it.segmentation_compartment == null }
+
+        if (has_compartment && missing_compartment) {
+            error "Error: For rows where segmentation_channel is true, either all or none of the segmentation_compartment values must be defined."
+        }
+
+        // Validate that segmentation_compartment values only appear where segmentation_channel is true
+        def invalid_compartments = marker_data.findAll { it.segmentation_compartment != null && !it.segmentation_channel }
+        if (invalid_compartments) {
+            error "Error: segmentation_compartment values are defined where segmentation_channel is not true."
+        }
+
+        // Validate that if segmentation_compartment values are duplicated, params.segmentation_max_projection is true
+        def compartments_with_true_channel = marker_data.findAll { it.segmentation_channel }*.segmentation_compartment
+        def duplicate_compartments = compartments_with_true_channel.groupBy { it }.findAll { key, value -> key != null && value.size() > 1 }
+        if (duplicate_compartments && !params.segmentation_max_projection) {
+            error "Error: Duplicate segmentation_compartment values found where segmentation_channel is true. Set params.segmentation_max_projection to true to allow this."
+        }
+    }
+
+    // }
     // uniqueness of (channel, cycle) tuple in marker sheet
     def test_tuples = [channel_number_list, cycle_number_list].transpose()
     def dups = test_tuples.countBy{ it }.findAll{ _1, count -> count > 1 }*.key
@@ -306,7 +302,7 @@ def validateInputMarkersheet(markersheet_data, schema_file, params) {
     }
     // Throw error if backsub = false but backsub columns are present
     if (!params.backsub && has_backsub_columns) {
-        error("Error: exposure, background, or remove columns are present in the marker sheet, but params.backsub is set to false. Either remove these columns or set params.backsub to true.")
+        log.warn ("Warning: exposure, background, or remove columns are present in the marker sheet, but params.backsub is set to false. Autofluorescence correction is not performed.")
     }
 
     def has_any_background = marker_data.any { it.background != null }

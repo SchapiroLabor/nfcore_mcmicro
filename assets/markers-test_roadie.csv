@@ -1,5 +1,5 @@
 channel_number,cycle_number,marker_name,segmentation_channel,segmentation_compartment
 1,1,DNA 1,TRUE,nucleus
-2,1,Na/K ATPase,TRUE,membrane
+2,1,Na/K ATPase,,
 3,1,CD3,TRUE,membrane
 4,1,CD45RO,,

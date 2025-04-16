@@ -44,7 +44,9 @@ process ROADIE_RECYZE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.tif
+    touch ${prefix}_stack.tif
+    touch ${prefix}_nuclear.tif
+    touch ${prefix}_membrane.tif
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
