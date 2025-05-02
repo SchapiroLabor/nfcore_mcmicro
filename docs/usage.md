@@ -80,11 +80,12 @@ channel_number,cycle_number,marker_name
 
 ### optional markersheet columns
 
-| Column                  | Description                                    |
-| ----------------------- | ---------------------------------------------- |
-| `filter`                | Microscope filter common name.                 |
-| `excitation_wavelength` | Excitation wavelength for this channel, in nm. |
-| `emission_wavelength`   | Emission wavelength for this channel, in nm.   |
+| Column                  | Description                                                            |
+| ----------------------- | ---------------------------------------------------------------------- |
+| `filter`                | Microscope filter common name.                                         |
+| `excitation_wavelength` | Excitation wavelength for this channel, in nm.                         |
+| `emission_wavelength`   | Emission wavelength for this channel, in nm.                           |
+| `segmentation_channel`  | Boolean specifying whether the marker should be used for segmentation. |
 
 ## Running the pipeline
 
@@ -156,6 +157,10 @@ This is an optional step that occurs immediately following registration. It is t
 #### TMA Core Separation
 
 This is an optional step that occurs immediately following background subtration if that optional step was run or after registration if is was not. It is triggered by the `--tma_dearray` flag. When this flag is selected, the coreograph module is run on the output from either the background subtraction step or the registration step if background subtration was not performed. Coreograph separates the input image into a set of images for each of the cores. It uses UNet, a deep learning model, to identify complete/incomplete tissue cores on a tissue microarray. It has been trained on 9 TMA slides of different sizes and tissue types. More information about it can be found on the [coreograph nf-core module website](https://nf-co.re/modules/coreograph/)
+
+#### Channel extraction for segmentation
+
+Channel extraction for segmentation can be performed by setting the `segmentation_recyze` parameter to `true` which runs a custom process that extracts specified channels and can perform max projection. Control over what is passed to segmentation tools can be done in the markersheet by adding the optional `segmentation_channel` and `segmentation_compartment` columns. `segmentation_channel` should have values set to `TRUE` for channels that should be utilized for segmentation and extracted. If there is no `segmentation_comparment` value specified, the output is a stack containing requested channels. Additionally, by specifying the `segmentation_compartment` values to `nucleus` or `membrane` for channels where `segmentation_channel` is set to `TRUE`, individual channels are written to files (which is needed if using Deepcell Mesmer). If `segmentation_max_projection` is set to `true`, and multiple `nucleus` or `membrane` values are found in the markersheet, max projection will be applied on the specified compartments.
 
 #### Segmentation
 
