@@ -56,24 +56,38 @@ workflow MCMICRO {
             .dump(tag: 'ch_samplesheet (after BASICPY)')
     }
 
-    ch_samplesheet
-        .map{ meta, image_tiles, dfp, ffp ->
-            [[id: meta.id], [meta.cycle_number, image_tiles, dfp, ffp]]
-        }
-        // FIXME: pass groupTuple size: from samplesheet cycle count
-        .groupTuple(sort: { a, b -> a[0] <=> b[0] })
-        .map{ meta, cycles -> [meta, *cycles.collect{ it[1..-1] }.transpose()]}
-        .dump(tag: 'ASHLAR in')
-        // flatten() handles list of empty-lists, turning it into a single empty list.
-        .multiMap{ meta, images, dfps, ffps ->
-            images: [meta, images]
-            dfps: dfps.flatten()
-            ffps: ffps.flatten()
-        }
-        | ASHLAR
-    ch_versions = ch_versions.mix(ASHLAR.out.versions)
+    if (params.skip_ashlar) {
+        ch_samplesheet
+            .map { meta, image_tiles, dfp, ffp ->
+                [[id: meta.id], image_tiles]
+            }
+            .set{ pre_backsub }
+    } 
+    else {
+        ch_samplesheet
+            .map{ meta, image_tiles, dfp, ffp ->
+                [[id: meta.id], [meta.cycle_number, image_tiles, dfp, ffp]]
+            }
+            // FIXME: pass groupTuple size: from samplesheet cycle count
+            .groupTuple(sort: { a, b -> a[0] <=> b[0] })
+            .map{ meta, cycles -> [meta, *cycles.collect{ it[1..-1] }.transpose()]}
+            .dump(tag: 'ASHLAR in')
+            // flatten() handles list of empty-lists, turning it into a single empty list.
+            .multiMap{ meta, images, dfps, ffps ->
+                images: [meta, images]
+                dfps: dfps.flatten()
+                ffps: ffps.flatten()
+            }
+            | ASHLAR
+            ch_versions = ch_versions.mix(ASHLAR.out.versions)
+            //ASHLAR.out.tif.view()
+            ASHLAR.out.tif.set{ pre_backsub }
 
-    // Run Background Correction
+    }
+
+
+    // TO DO: check how this is given to BACKSUB
+    //println("ASHLAR out: ${ASHLAR.out.view()}")
     if (params.backsub) {
         ch_backsub_markers = ch_markersheet
             .map { ['channel_number,cycle_number,marker_name,exposure,background,remove',
@@ -82,8 +96,11 @@ workflow MCMICRO {
             .flatten()
             .map { it.replace('[]', '') }
             .collectFile(name: 'markers_backsub.csv', sort: false, newLine: true)
+        
+        //ch_backsub_markers.view()
+        //pre_backsub.view()
 
-        ASHLAR.out.tif
+        pre_backsub
             .combine(ch_backsub_markers)
             .dump(tag: 'BACKSUB IN')
             .multiMap{ meta, image, marker ->
@@ -91,11 +108,14 @@ workflow MCMICRO {
                 markers: [meta, marker]
             }
             | BACKSUB
+            
+        //pre_backsub.view()
+            //| BACKSUB
 
         post_registration = BACKSUB.out.backsub_tif
         ch_versions = ch_versions.mix(BACKSUB.out.versions)
     } else {
-        post_registration = ASHLAR.out.tif
+        post_registration = pre_backsub
     }
 
     // Run Coreograph
