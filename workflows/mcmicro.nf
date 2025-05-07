@@ -62,8 +62,7 @@ workflow MCMICRO {
                 [[id: meta.id], image_tiles]
             }
             .set{ pre_backsub }
-    } 
-    else {
+    } else {
         ch_samplesheet
             .map{ meta, image_tiles, dfp, ffp ->
                 [[id: meta.id], [meta.cycle_number, image_tiles, dfp, ffp]]
@@ -96,9 +95,6 @@ workflow MCMICRO {
             .flatten()
             .map { it.replace('[]', '') }
             .collectFile(name: 'markers_backsub.csv', sort: false, newLine: true)
-        
-        //ch_backsub_markers.view()
-        //pre_backsub.view()
 
         pre_backsub
             .combine(ch_backsub_markers)
@@ -108,9 +104,6 @@ workflow MCMICRO {
                 markers: [meta, marker]
             }
             | BACKSUB
-            
-        //pre_backsub.view()
-            //| BACKSUB
 
         post_registration = BACKSUB.out.backsub_tif
         ch_versions = ch_versions.mix(BACKSUB.out.versions)
