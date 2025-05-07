@@ -79,6 +79,10 @@
                     "type": "string",
                     "description": "optional model file for cellpose segmentation"
                 },
+                "skip_ashlar": {
+                    "type": "boolean",
+                    "description": "Skip registration with ASHLAR."
+                },
                 "backsub": {
                     "type": "boolean",
                     "description": "boolean to flag whether or not to apply background subtraction"
