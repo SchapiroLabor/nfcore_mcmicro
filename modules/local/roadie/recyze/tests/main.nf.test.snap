@@ -11,22 +11,6 @@
                     ]
                 ],
                 "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_nuclear.tif:md5,877227524ae1a7ed00f1dfe10d94d861"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_membrane.tif:md5,3d6db182f77edf61e90df034b456cb2b"
-                    ]
-                ],
-                "3": [
                     "versions.yml:md5,7a394d888025b1e38544241e1df21069"
                 ],
                 "extracted_channels": [
@@ -37,22 +21,6 @@
                         "test_stack.tif:md5,a30d0f098ed8ccfa63cdaa95d89f2560"
                     ]
                 ],
-                "membrane_single_channel": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_membrane.tif:md5,3d6db182f77edf61e90df034b456cb2b"
-                    ]
-                ],
-                "nuclear_single_channel": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_nuclear.tif:md5,877227524ae1a7ed00f1dfe10d94d861"
-                    ]
-                ],
                 "versions": [
                     "versions.yml:md5,7a394d888025b1e38544241e1df21069"
                 ]
@@ -60,9 +28,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "24.10.6"
         },
-        "timestamp": "2025-04-16T10:11:56.047540124"
+        "timestamp": "2025-05-08T22:07:13.52914929"
     },
     "exemplar - tif - stub": {
         "content": [
@@ -76,22 +44,6 @@
                     ]
                 ],
                 "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_nuclear.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_membrane.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
                     "versions.yml:md5,dbd77571d8e21146df95814f31385544"
                 ],
                 "extracted_channels": [
@@ -102,22 +54,6 @@
                         "test_stack.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "membrane_single_channel": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_membrane.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "nuclear_single_channel": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_nuclear.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
                 "versions": [
                     "versions.yml:md5,dbd77571d8e21146df95814f31385544"
                 ]
@@ -125,9 +61,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "24.10.6"
         },
-        "timestamp": "2025-04-16T10:01:10.331165522"
+        "timestamp": "2025-05-08T22:07:59.887009444"
     },
     "exemplar - tif - 2 channels - nuclear - membrane max projection - ASHLAR setup": {
         "content": [
@@ -141,22 +77,6 @@
                     ]
                 ],
                 "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_nuclear.tif:md5,877227524ae1a7ed00f1dfe10d94d861"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_membrane.tif:md5,fef86dd4a825545175bbc4e171666bcb"
-                    ]
-                ],
-                "3": [
                     "versions.yml:md5,7a394d888025b1e38544241e1df21069"
                 ],
                 "extracted_channels": [
@@ -167,22 +87,6 @@
                         "test_stack.tif:md5,836a9ba805726303fcc3903e80bef02a"
                     ]
                 ],
-                "membrane_single_channel": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_membrane.tif:md5,fef86dd4a825545175bbc4e171666bcb"
-                    ]
-                ],
-                "nuclear_single_channel": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_nuclear.tif:md5,877227524ae1a7ed00f1dfe10d94d861"
-                    ]
-                ],
                 "versions": [
                     "versions.yml:md5,7a394d888025b1e38544241e1df21069"
                 ]
@@ -190,9 +94,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "24.10.6"
         },
-        "timestamp": "2025-04-14T09:06:09.306009067"
+        "timestamp": "2025-05-08T22:07:38.122997927"
     },
     "exemplar - tif - 2 channels - ASHLAR setup": {
         "content": [
@@ -206,12 +110,6 @@
                     ]
                 ],
                 "1": [
-                    
-                ],
-                "2": [
-                    
-                ],
-                "3": [
                     "versions.yml:md5,7a394d888025b1e38544241e1df21069"
                 ],
                 "extracted_channels": [
@@ -222,12 +120,6 @@
                         "test_stack.tif:md5,a30d0f098ed8ccfa63cdaa95d89f2560"
                     ]
                 ],
-                "membrane_single_channel": [
-                    
-                ],
-                "nuclear_single_channel": [
-                    
-                ],
                 "versions": [
                     "versions.yml:md5,7a394d888025b1e38544241e1df21069"
                 ]
@@ -235,9 +127,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "24.10.6"
         },
-        "timestamp": "2025-04-16T10:11:35.90841844"
+        "timestamp": "2025-05-08T22:06:49.921316726"
     },
     "exemplar - tif - 1 channel - ASHLAR setup": {
         "content": [
@@ -251,12 +143,6 @@
                     ]
                 ],
                 "1": [
-                    
-                ],
-                "2": [
-                    
-                ],
-                "3": [
                     "versions.yml:md5,7a394d888025b1e38544241e1df21069"
                 ],
                 "extracted_channels": [
@@ -267,12 +153,6 @@
                         "test_stack.tif:md5,cf1636501b5acd999a501e5e38f1abb0"
                     ]
                 ],
-                "membrane_single_channel": [
-                    
-                ],
-                "nuclear_single_channel": [
-                    
-                ],
                 "versions": [
                     "versions.yml:md5,7a394d888025b1e38544241e1df21069"
                 ]
@@ -280,8 +160,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "24.10.6"
         },
-        "timestamp": "2025-04-16T10:00:04.722554806"
+        "timestamp": "2025-05-08T22:06:26.710547326"
     }
 }
