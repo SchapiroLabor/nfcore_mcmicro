@@ -11,6 +11,7 @@ nextflow_workflow {
             when {
                 params {
                     segmentation = "mesmer"
+                    mesmer_compartment = 'nuclear'
                 }
                 workflow {
                     """
@@ -55,6 +56,7 @@ nextflow_workflow {
                 params {
                     illumination = "basicpy"
                     segmentation = "mesmer"
+                    mesmer_compartment = "nuclear"
                 }
                 workflow {
                     """
@@ -100,6 +102,7 @@ nextflow_workflow {
                 params {
                     illumination = "manual"
                     segmentation = "mesmer"
+                    mesmer_compartment = "nuclear"
                 }
                 workflow {
                     """
@@ -142,6 +145,7 @@ nextflow_workflow {
             when {
                 params {
                     segmentation = "mesmer"
+                    mesmer_compartment = "nuclear"
                 }
                 workflow {
                     """
@@ -204,6 +208,7 @@ nextflow_workflow {
             when {
                 params {
                     segmentation = "mesmer"
+                    mesmer_compartment = "nuclear"
                 }
                 workflow {
                     """
@@ -271,6 +276,7 @@ nextflow_workflow {
             when {
                 params {
                     segmentation = "mesmer,cellpose"
+                    mesmer_compartment = "nuclear"
                 }
                 workflow {
                     """
@@ -343,6 +349,7 @@ nextflow_workflow {
                 params {
                     illumination = "basicpy"
                     segmentation = "mesmer"
+                    mesmer_compartment = "nuclear"
                 }
                 workflow {
                     """
@@ -412,6 +419,7 @@ nextflow_workflow {
                 params {
                     illumination = "basicpy"
                     segmentation = "mesmer"
+                    mesmer_compartment = "nuclear"
                 }
                 workflow {
                     """
@@ -528,6 +536,7 @@ nextflow_workflow {
             when {
                 params {
                     segmentation = "mesmer"
+                    mesmer_compartment = "nuclear"
                     tma_dearray = true
                     pixel_size = 0.7
                     check_conda_channels = false
@@ -570,6 +579,7 @@ nextflow_workflow {
             when {
                 params {
                     segmentation = "mesmer"
+                    mesmer_compartment = "nuclear"
                     backsub = true
                 }
                 workflow {
@@ -665,5 +675,148 @@ nextflow_workflow {
 
         },
 
+        test("cycle: no illumination correction, skip ashlar, run backsub, recyze, mesmer") {
+
+            when {
+                params {
+                    skip_ashlar = true
+                    backsub = true
+                    pixel_size = 0.23
+                    segmentation = "mesmer"
+                    segmentation_recyze = true
+                }
+                workflow {
+                    """
+                    input[0] = Channel.of(
+                        [
+                            [id:"TEST1", cycle_number:1, channel_count:5],
+                            "https://raw.githubusercontent.com/nf-core/test-datasets/mcmicro/data/prestitched/lunaphore_example.ome.tiff",
+                            [],
+                            [],
+                        ],
+                    )
+                    input[1] = Channel.of(
+                        [
+                            [1,1,'DAPI',[],[],[],20,[],[],true,'nucleus'],
+                            [2,1,'Cy5',[],[],[],200,[],[],[],[]],
+                            [3,1,'TRITC',[],[],[],200,[],[],[],[]],
+                            [4,1,'TNNT2',[],[],[],200,'Cy5',[],[],[]],
+                            [5,1,'WGA',[],[],[],200,'TRITC',[],true,'membrane'],
+                        ],
+                    )
+                    """
+                }
+            }
+
+            then {
+                assertAll (
+                    {
+                        assert snapshot (
+                            path("$outputDir/backsub/TEST1.backsub.ome.tif"),
+                            path("$outputDir/roadie/TEST1_stack.tif"),
+                            path("$outputDir/segmentation/deepcell_mesmer/mask_TEST1.tif"),
+                            CsvUtils.roundAndHashCsv("$outputDir/quantification/mcquant/mesmer/TEST1.backsub_mask_TEST1.csv"),
+                        ).match()
+                    },
+                    { assert workflow.success }
+                )
+            }
+
+        },
+
+
+        test("cycle: no illumination correction, skip ashlar, run recyze, mesmer") {
+
+            when {
+                params {
+                    skip_ashlar = true
+                    pixel_size = 0.23
+                    segmentation = "mesmer"
+                    segmentation_recyze = true
+
+                }
+                workflow {
+                    """
+                    input[0] = Channel.of(
+                        [
+                            [id:"TEST1", cycle_number:1, channel_count:5],
+                            "https://raw.githubusercontent.com/nf-core/test-datasets/mcmicro/data/prestitched/lunaphore_example.ome.tiff",
+                            [],
+                            [],
+                        ],
+                    )
+                    input[1] = Channel.of(
+                        [
+                            [1,1,'DAPI',[],[],[],[],[],[],true,'nucleus'],
+                            [2,1,'Cy5',[],[],[],[],[],[],[],[]],
+                            [3,1,'TRITC',[],[],[],[],[],[],[],[]],
+                            [4,1,'TNNT2',[],[],[],[],[],[],[],[]],
+                            [5,1,'WGA',[],[],[],[],[],[],true,'membrane'],
+                        ],
+                    )
+                    """
+                }
+            }
+
+            then {
+                assertAll (
+                    {
+                        assert snapshot (
+                            path("$outputDir/roadie/TEST1_stack.tif"),
+                            path("$outputDir/segmentation/deepcell_mesmer/mask_TEST1.tif"),
+                            CsvUtils.roundAndHashCsv("$outputDir/quantification/mcquant/mesmer/lunaphore_example_mask_TEST1.csv"),
+                        ).match()
+                    },
+                    { assert workflow.success }
+                )
+            }
+
+        },
+
+        test("cycle: no illumination correction, skip ashlar, mesmer") {
+
+            when {
+                params {
+                    skip_ashlar = true
+                    pixel_size = 0.23
+                    segmentation = "mesmer"
+
+                }
+                workflow {
+                    """
+                    input[0] = Channel.of(
+                        [
+                            [id:"TEST1", cycle_number:1, channel_count:5],
+                            "https://raw.githubusercontent.com/nf-core/test-datasets/mcmicro/data/prestitched/lunaphore_example.ome.tiff",
+                            [],
+                            [],
+                        ],
+                    )
+                    input[1] = Channel.of(
+                        [
+                            [1,1,'DAPI',[],[],[],[],[],[],[],[]],
+                            [2,1,'Cy5',[],[],[],[],[],[],[],[]],
+                            [3,1,'TRITC',[],[],[],[],[],[],[],[]],
+                            [4,1,'TNNT2',[],[],[],[],[],[],[],[]],
+                            [5,1,'WGA',[],[],[],[],[],[],[],[]],
+                        ],
+                    )
+                    """
+                }
+            }
+
+            then {
+                assertAll (
+                    {
+                        assert snapshot (
+                            path("$outputDir/segmentation/deepcell_mesmer/mask_TEST1.tif"),
+                            CsvUtils.roundAndHashCsv("$outputDir/quantification/mcquant/mesmer/lunaphore_example_mask_TEST1.csv"),
+                        ).match()
+                    },
+                    { assert workflow.success }
+                )
+            }
+
+        },
     ]
 }

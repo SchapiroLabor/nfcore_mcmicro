@@ -7,6 +7,7 @@ process DEEPCELL_MESMER {
     input:
     tuple val(meta) , path(img)
     tuple val(meta2), path(membrane_img)
+    val(membrane_channels)
 
     // Output a .tif image, don't touch versions
     output:
@@ -19,7 +20,7 @@ process DEEPCELL_MESMER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def membrane_command = membrane_img ? "--membrane-image $membrane_img" : ""
+    def membrane_command = membrane_channels ? "--membrane-image $img --membrane-channel 1" : ""
     def VERSION = "0.4.1"
 
     """

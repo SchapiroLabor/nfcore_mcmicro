@@ -100,6 +100,12 @@
                     "type": "number",
                     "description": "Pixel width of input image data, in microns",
                     "help_text": "You must set this parameter when enabling TMA de-arraying with the `tma_dearray` parameter. This is required for the de-arraying module to correctly process the image."
+                },
+                "mesmer_compartment": {
+                    "type": "string",
+                    "default": "whole-cell",
+                    "enum": ["nuclear", "whole-cell"],
+                    "description": "Mesmer compartment to segment"
                 }
             }
         },

@@ -131,63 +131,41 @@ workflow MCMICRO {
         }
         .toList()
 
+    ch_roadie_channels = ch_markersheet_filtered
+        .flatMap { row ->
+            row.collect { channel_number, _2, _3, _4, _5, _6, _7, _8, _9, segmentation_channel, segmentation_compartment ->
+                segmentation_channel ? (channel_number - 1) : null
+            }.findAll { it != null }
+        }.collect()
+
+    ch_roadie_nucleus = ch_markersheet_filtered
+        .map { row ->
+            row.findAll { it[10] == 'nucleus' }
+            .collect { it[0] - 1 }
+        }
+        .ifEmpty { [[]] }.collect().ifEmpty { [] } // If the channel is empty, emit a channel with an empty list
+
+    ch_roadie_membrane = ch_markersheet_filtered
+        .map { row ->
+            row.findAll { it[10] == 'membrane' }
+            .collect { it[0] - 1 }
+        }
+        .ifEmpty { [[]] }.collect().ifEmpty { [] } // If the channel is empty, emit a channel with an empty list
+
     if (params.segmentation_recyze) {
-        ch_roadie_channels = ch_markersheet_filtered
-            .flatMap { row ->
-                row.collect { channel_number, _2, _3, _4, _5, _6, _7, _8, _9, segmentation_channel, segmentation_compartment ->
-                    segmentation_channel ? (channel_number - 1) : null
-                }.findAll { it != null }
-            }.collect()
-        ch_roadie_nucleus = ch_markersheet_filtered
-            .map { row ->
-                row.findAll { it[10] == 'nucleus' }
-                .collect { it[0] - 1 }
-            }
-            .ifEmpty { [[]] }.collect().ifEmpty { [] } // If the channel is empty, emit a channel with an empty list
-
-        ch_roadie_membrane = ch_markersheet_filtered
-            .map { row ->
-                row.findAll { it[10] == 'membrane' }
-                .collect { it[0] - 1 }
-            }
-            .ifEmpty { [[]] }.collect().ifEmpty { [] }  // If the channel is empty, emit a channel with an empty list
-
         ROADIE_RECYZE(ch_segmentation_input, ch_roadie_channels, ch_roadie_nucleus, ch_roadie_membrane )
         ch_segmentation_input_extracted = ROADIE_RECYZE.out.extracted_channels
-
-        // // Extracting the emitted channels
-
-        ch_extracted = ROADIE_RECYZE.out.extracted_channels
-        mesmer_channels = ROADIE_RECYZE.out.extracted_channels
-            .concat(ROADIE_RECYZE.out.nuclear_single_channel)
-            .concat(ROADIE_RECYZE.out.membrane_single_channel)
-            .groupTuple( by: 0 )
-            .map { meta, values ->
-                // Flatten the grouped values into a single list
-                def flattened_values = values.flatten()
-                switch (flattened_values.size()) {
-                    case 1:
-                        return [meta, flattened_values[0], []]
-                    case 2:
-                        return [meta, flattened_values[1], []]
-                    case 3:
-                        return [meta, flattened_values[1], flattened_values[2]]
-                    default:
-                        return [meta] + flattened_values
-                }
-            }
-
     } else {
         ch_segmentation_input_extracted = ch_segmentation_input
-        mesmer_channels = ch_segmentation_input.map {[it[0], it[1], []]}
     }
     // Run Segmentation
 
     ch_masks = Channel.empty()
-    mesmer_channels.multiMap{
-        meta, image, membrane ->
+    ch_segmentation_input_extracted.multiMap{
+        meta, image ->
         img: [meta + [segmenter: 'mesmer'], image]
-        membrane_img: [meta + [segmenter: 'mesmer'], membrane]
+        membrane_img: [meta + [segmenter: 'mesmer'], []]
+        membrane_channels: params.segmentation_recyze ? ch_roadie_membrane : []
         }
         | DEEPCELL_MESMER
     ch_masks = ch_masks.mix(DEEPCELL_MESMER.out.mask)

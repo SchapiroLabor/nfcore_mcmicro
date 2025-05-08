@@ -1,4 +1,4 @@
-channel_number,cycle_number,marker_name,background,exposure,remove
+channel_number,cycle_number,marker_name,background,exposure,remove,
 1,1,DNA 1,,,
 2,1,Na/K ATPase,,100,true
 3,1,CD3,Na/K ATPase,100,

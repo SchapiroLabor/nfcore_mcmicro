@@ -14,7 +14,7 @@ class PyramidWriter:
 
     def __init__(
             self, _in_path, _out_path, _channels, _nuclear_channels, _membrane_channels, _max_projection, _x, _y, _x2, _y2, _w, _h, scale=2, tile_size=1024, peak_size=1024,
-            verbose=False, nuclear_out=None, membrane_out=None
+            verbose=False
     ):
         if tile_size % 16 != 0:
             raise ValueError("tile_size must be a multiple of 16")
@@ -24,8 +24,6 @@ class PyramidWriter:
         self.out_path = Path(_out_path)
         self.metadata = from_tiff(self.in_path)
         self.max_projection = _max_projection
-        self.nuclear_out = nuclear_out
-        self.membrane_out = membrane_out
 
         self.is_zarr_hierarchy_group = isinstance(self.in_data, zarr.hierarchy.Group)
         self.base_data = self.in_data[0] if self.is_zarr_hierarchy_group else self.in_data
@@ -298,23 +296,6 @@ class PyramidWriter:
             # Write
         tifffile.tiffcomment(self.out_path, to_xml(self.metadata).encode())
 
-
-        print(self.nuclear_out, self.nuclear_channels)
-        # Write nuclear channel image if requested
-        if self.nuclear_out and self.nuclear_channels:
-            nuclear_img = self.max_projection_channel(self.nuclear_channels) if self.max_projection else \
-                self.base_data[self.nuclear_channels[0], self.y:self.y + self.height, self.x:self.x + self.width]
-            self.write_channel_image(nuclear_img, self.nuclear_out)
-
-
-        print(self.membrane_out, self.membrane_channels)
-        # Write membrane channel image if requested
-        if self.membrane_out and self.membrane_channels:
-            membrane_img = self.max_projection_channel(self.membrane_channels) if self.max_projection else \
-                self.base_data[self.membrane_channels[0], self.y:self.y + self.height, self.x:self.x + self.width]
-            self.write_channel_image(membrane_img, self.membrane_out)
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--in', type=str, required=True, help="Input Image Path")
@@ -344,8 +325,6 @@ if __name__ == '__main__':
         '--num-threads', type=int, required=False, default=0, metavar="N",
         help="Worker thread count (Default: auto-scale based on number of available CPUs)",
     )
-    parser.add_argument('--nuclear_out', type=str, required=False, help="Output path for the nuclear channel image")
-    parser.add_argument('--membrane_out', type=str, required=False, help="Output path for the membrane channel image")
     parser.add_argument('--version', action='version', version='2.0.0dev')
     args = parser.parse_args()
 
@@ -377,5 +356,5 @@ if __name__ == '__main__':
     print(f"Nuclear channels: {args.nuclear_channels}")
     print(f"Membrane channels: {args.membrane_channels}")
 
-    writer = PyramidWriter(in_path, out_path, args.channels, args.nuclear_channels, args.membrane_channels, args.max_projection, args.x, args.y, args.x2, args.y2, args.w, args.h, nuclear_out=args.nuclear_out, membrane_out=args.membrane_out)
+    writer = PyramidWriter(in_path, out_path, args.channels, args.nuclear_channels, args.membrane_channels, args.max_projection, args.x, args.y, args.x2, args.y2, args.w, args.h)
     writer.run()
