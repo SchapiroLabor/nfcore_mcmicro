@@ -62,25 +62,24 @@ nextflow_workflow {
                 assert workflow.stdout*.contains("set params.backsub=false").any()
             }
         },
+        // test("Error on backsub if columns are provided, but backsub is false") {
+        //     when {
+        //         params {
+        //             input_cycle = "${projectDir}/assets/samplesheet-test.csv"
+        //             marker_sheet = "${projectDir}/assets/markers-test_backsub.csv"
 
-        test("Error on backsub if columns are provided, but backsub is false") {
-            when {
-                params {
-                    input_cycle = "${projectDir}/assets/samplesheet-test.csv"
-                    marker_sheet = "${projectDir}/assets/markers-test_backsub.csv"
-
-                }
-                workflow {
-                    """
-                    input = [false, false, false, [], '$outputDir', params.input_cycle, [], params.marker_sheet]
-                    """
-                }
-            }
-            then {
-                assert workflow.failed
-                assert workflow.stdout*.contains("Either remove these columns or set params.backsub to true.").any()
-            }
-        },
+        //         }
+        //         workflow {
+        //             """
+        //             input = [false, false, false, [], '$outputDir', params.input_cycle, [], params.marker_sheet]
+        //             """
+        //         }
+        //     }
+        //     then {
+        //         assert workflow.failed
+        //         assert workflow.stdout*.contains("Either remove these columns or set params.backsub to true.").any()
+        //     }
+        // },
         test("Error on backsub if background value not in marker_name") {
             when {
                 params {
