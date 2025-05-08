@@ -12,29 +12,16 @@ Changes in 'deepcell/mesmer/main.nf':
      output:
 @@ -19,7 +20,7 @@
      script:
-     def args = task.ext.args ?: ''
-     def prefix = task.ext.prefix ?: "${meta.id}"
+     def args             = task.ext.args ?: ''
+     def prefix           = task.ext.prefix ?: "${meta.id}"
 -    def membrane_command = membrane_img ? "--membrane-image $membrane_img" : ""
 +    def membrane_command = membrane_channels ? "--membrane-image $img --membrane-channel 1" : ""
-     def VERSION = "0.4.1"
+     def VERSION          = "0.4.1"
  
      """
 
 'modules/nf-core/deepcell/mesmer/meta.yml' is unchanged
-Changes in 'deepcell/mesmer/tests/main.nf.test':
---- modules/nf-core/deepcell/mesmer/tests/main.nf.test
-+++ modules/nf-core/deepcell/mesmer/tests/main.nf.test
-@@ -17,7 +17,7 @@
-                 """
-                 input[0] = [
-                     [ id: 'test_img' ],
--                    file(params.modules_testdata_base_path + 'imaging/segmentation/cycif_tonsil_registered.ome.tif', checkIfExists: true)
-+                    file(params.modules_testdata_base_path + '/modules/data/imaging/segmentation/cycif_tonsil_registered.ome.tif', checkIfExists: true)
-                 ]
-                 input[1] = [
-                     [:],
-
 'modules/nf-core/deepcell/mesmer/tests/main.nf.test.snap' is unchanged
+'modules/nf-core/deepcell/mesmer/tests/main.nf.test' is unchanged
 'modules/nf-core/deepcell/mesmer/tests/nextflow.config' is unchanged
-'modules/nf-core/deepcell/mesmer/tests/tags.yml' is unchanged
 ************************************************************
