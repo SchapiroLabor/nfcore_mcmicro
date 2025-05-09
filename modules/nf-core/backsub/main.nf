@@ -23,12 +23,13 @@ process BACKSUB {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix2 = task.ext.prefix2 ?: "${meta.id}"
     if ("$image" == "${prefix}.ome.tif") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     python3 /background_subtraction/background_sub.py \
         -o "${prefix}.ome.tif" \
-        -mo "${prefix}.csv" \
+        -mo "${prefix2}.csv" \
         -r $image \
         -m $markerfile \
         $args
