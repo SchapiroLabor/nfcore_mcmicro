@@ -541,13 +541,13 @@
                 ],
                 "rowCount": 2111
             },
-            "TEST1.backsub.ome.tif:md5,1be44fc5c0a60557bff3c2d0c69c2f41"
+            "TEST1.backsub.ome.tif:md5,3e712860ee6f419f6742f497b6b23e3c"
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "25.04.0"
         },
-        "timestamp": "2025-03-25T14:57:17.455670557"
+        "timestamp": "2025-05-09T08:16:41.464761346"
     },
     "cycle: multiple file ashlar input with multiple samples no correction, multiple segmentation": {
         "content": [
@@ -626,16 +626,16 @@
     },
     "cycle: no illumination correction, skip ashlar, run backsub, recyze, mesmer": {
         "content": [
-            "TEST1.backsub.ome.tif:md5,3ed67e024b7773fef7df91336cd27c57",
-            "TEST1_stack.tif:md5,719a029513e5562b4c5fa5d3cebc75f7",
+            "TEST1.backsub.ome.tif:md5,52ae304d1d46c21d3470023225a9e399",
+            "TEST1_stack.tif:md5,a9ad4edc95e6ec24631a496386ac6610",
             "mask_TEST1.tif:md5,bf917bc4a06f2a5d01229968cc352f7b",
             "TEST1.backsub_mask_TEST1.csv:rounded:md5,573a7b5345b97719f1706c149bb3e0e7"
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.6"
+            "nextflow": "25.04.0"
         },
-        "timestamp": "2025-05-08T21:55:41.013431139"
+        "timestamp": "2025-05-09T08:14:12.995037787"
     },
     "cycle: no illumination correction": {
         "content": [

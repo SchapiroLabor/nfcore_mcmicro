@@ -2,7 +2,7 @@ Changes in component 'nf-core/backsub'
 Changes in 'backsub/main.nf':
 --- modules/nf-core/backsub/main.nf
 +++ modules/nf-core/backsub/main.nf
-@@ -23,12 +23,13 @@
+@@ -23,15 +23,18 @@
      }
      def args = task.ext.args ?: ''
      def prefix = task.ext.prefix ?: "${meta.id}"
@@ -17,6 +17,11 @@ Changes in 'backsub/main.nf':
          -r $image \
          -m $markerfile \
          $args
++
++    sed -i -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.ome.tif
+ 
+     cat <<-END_VERSIONS > versions.yml
+     "${task.process}":
 
 'modules/nf-core/backsub/meta.yml' is unchanged
 'modules/nf-core/backsub/tests/main.nf.test' is unchanged

@@ -34,6 +34,8 @@ process BACKSUB {
         -m $markerfile \
         $args
 
+    sed -i -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.ome.tif
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         backsub: \$(python3 /background_subtraction/background_sub.py --version | sed 's/v//g')
