@@ -13,8 +13,9 @@
                     },
                     "backsub": {
                         "branch": "master",
-                        "git_sha": "240937a2a9c30298110753292be041188891f2cb",
-                        "installed_by": ["modules"]
+                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
+                        "installed_by": ["modules"],
+                        "patch": "modules/nf-core/backsub/backsub.diff"
                     },
                     "basicpy": {
                         "branch": "master",
@@ -35,8 +36,9 @@
                     },
                     "deepcell/mesmer": {
                         "branch": "master",
-                        "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
-                        "installed_by": ["modules"]
+                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
+                        "installed_by": ["modules"],
+                        "patch": "modules/nf-core/deepcell/mesmer/deepcell-mesmer.diff"
                     },
                     "ilastik/multicut": {
                         "branch": "master",

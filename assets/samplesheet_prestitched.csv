@@ -1,0 +1,2 @@
+sample,cycle_number,channel_count,image_tiles
+TEST1,1,5,https://raw.githubusercontent.com/nf-core/test-datasets/mcmicro/data/prestitched/lunaphore_example.ome.tiff

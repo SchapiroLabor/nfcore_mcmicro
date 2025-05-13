@@ -1,0 +1,6 @@
+channel_number,cycle_number,marker_name,segmentation_channel,segmentation_compartment
+1,1,DAPI,TRUE,nucleus
+2,1,Cy5,,
+3,1,TRITC,,
+4,1,TNNT2,,
+5,1,WGA,TRUE,membrane

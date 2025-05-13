@@ -12,8 +12,6 @@ process ROADIE_RECYZE {
 
     output:
     tuple val(meta), path("*_stack.tif")   , emit: extracted_channels
-    tuple val(meta), path("*_nuclear.tif") , emit: nuclear_single_channel , optional: true
-    tuple val(meta), path("*_membrane.tif"), emit: membrane_single_channel, optional: true
     path "versions.yml"                    , emit: versions
 
     script:
@@ -31,8 +29,6 @@ process ROADIE_RECYZE {
         ${nuclear_channels_command} \\
         ${membrane_channels_command} \\
         --num-threads $task.cpus \\
-        --nuclear_out ${prefix}_nuclear.tif \\
-        --membrane_out ${prefix}_membrane.tif \\
         $args \\
 
     cat <<-END_VERSIONS > versions.yml
@@ -45,8 +41,6 @@ process ROADIE_RECYZE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_stack.tif
-    touch ${prefix}_nuclear.tif
-    touch ${prefix}_membrane.tif
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

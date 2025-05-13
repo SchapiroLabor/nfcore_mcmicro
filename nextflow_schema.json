@@ -88,6 +88,10 @@
                     "type": "string",
                     "description": "optional model file for cellpose segmentation"
                 },
+                "skip_ashlar": {
+                    "type": "boolean",
+                    "description": "Skip registration with ASHLAR."
+                },
                 "backsub": {
                     "type": "boolean",
                     "description": "boolean to flag whether or not to apply background subtraction"
@@ -96,6 +100,12 @@
                     "type": "number",
                     "description": "Pixel width of input image data, in microns",
                     "help_text": "You must set this parameter when enabling TMA de-arraying with the `tma_dearray` parameter. This is required for the de-arraying module to correctly process the image."
+                },
+                "mesmer_compartment": {
+                    "type": "string",
+                    "default": "whole-cell",
+                    "enum": ["nuclear", "whole-cell"],
+                    "description": "Mesmer compartment to segment"
                 }
             }
         },
