@@ -93,7 +93,7 @@ class PyramidWriter:
             _w = _x2 - _x
             _h = _y2 - _y
 
-        self.num_levels = math.ceil(math.log((max([_h, _w]) / self.peak_size), self.scale)) + 1
+        self.num_levels = math.ceil(math.log(max((max([_h, _w]) / self.peak_size), 1), self.scale)) + 1
 
         rounded_x = np.floor(_x / (self.scale ** (self.num_levels - 1))).astype(int) * (2 ** (self.num_levels - 1))
         self.x = max([rounded_x, 0])
